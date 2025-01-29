@@ -1,18 +1,15 @@
 import pandas as pd
-import requests
 import streamlit as st
 from nba_api.stats.endpoints import teamgamelogs
-from nba_api.stats.endpoints import boxscoretraditionalv2
-
 from nba_api.stats.static import teams
 
 def get_opponent_name(opp, team_mapping):
     opponent = opp.replace("@", "vs.").split(" vs. ")[1]
     return team_mapping.get(opponent, opponent)
 
-def get_team_data(season):
+def get_team_data(team_id, season):
     games_home = teamgamelogs.TeamGameLogs(
-        team_id_nullable=1610612739, 
+        team_id_nullable=team_id, 
         season_nullable=season, 
         location_nullable="Home"
     )
@@ -20,7 +17,7 @@ def get_team_data(season):
     df_home["Local"] = "Home"
 
     games_road = teamgamelogs.TeamGameLogs(
-        team_id_nullable=1610612739, 
+        team_id_nullable=team_id, 
         season_nullable=season, 
         location_nullable="Road"
     )
@@ -40,7 +37,7 @@ def get_team_data(season):
     road_defeats = df[(df["Local"] == "Road") & (df["Defeat"])]
 
     colunas = list(df.columns)
-    colunas_desejadas = list(df.columns)[colunas.index("MIN"):colunas.index("PLUS_MINUS") + 1]
+    colunas_desejadas = list(df.columns)[colunas.index("MIN"):colunas.index("PTS") + 1]
     nova_ordem = ["GAME_ID", "GAME_DATE", "Local", "MATCHUP", "Victory", "Defeat", "Score"] + colunas_desejadas
 
     colunas_ptbr = {
@@ -72,7 +69,6 @@ def get_team_data(season):
         "PF": "Faltas",
         "PFD": "Faltas Sofr",
         "PTS": "Pontos",
-        "PLUS_MINUS": "Mais/Menos"
     }
 
     df = df[nova_ordem].rename(columns=colunas_ptbr)
@@ -111,7 +107,7 @@ tab1, tab2 = st.tabs(["Season 2023-24", "Season 2024-25"])
 
 with tab1:
     st.header("Season 2023-24")
-    df_23_24, summary_23_24, total_23_24, mean_23_24 = get_team_data("2023-24")
+    df_23_24, summary_23_24, total_23_24, mean_23_24 = get_team_data(1610612739, "2023-24")
     with st.expander("Resumo da Temporada 2023-24", icon="🔎"):
         st.write("Totais")
         st.dataframe(summary_23_24, hide_index=True)
@@ -123,7 +119,7 @@ with tab1:
 
 with tab2:
     st.header("Season 2024-25")
-    df_24_25, summary_24_25, total_24_25, mean_24_25 = get_team_data("2024-25")
+    df_24_25, summary_24_25, total_24_25, mean_24_25 = get_team_data(1610612739, "2024-25")
     with st.expander(" Resumo da Temporada 2024-25", icon="🔎"):
         st.write("Totais")
         st.dataframe(summary_24_25, hide_index=True)

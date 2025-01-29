@@ -4,8 +4,9 @@ st.set_page_config(page_title="Data manager", page_icon=":basketball:")
 
 pages = {
     "🎖️ Parte 1 - Equipes NBA": [    
-        st.Page("./pages/parte1/lista_times.py", title="Lista dos Times da Liga", icon=""),
-        st.Page("./pages/parte1/lista_jogos.py", title="Lista de Jogos do Time", icon=""),
+        st.Page("./pages/parte1/lista_times.py", title="Times da Liga", icon=""),
+        st.Page("./pages/parte1/lista_jogos.py", title="Jogos do Time", icon=""),
+        st.Page("./pages/parte1/graficos_time.py", title="Gráficos do Time", icon=""),
     ],
     "🤾 Parte 2 - Jogadores NBA": [ 
         st.Page("./pages/parte2/parte2.py", title="Parte 2", icon="")
