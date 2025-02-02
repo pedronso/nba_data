@@ -242,45 +242,35 @@ def plot_line_chart(df):
     st.altair_chart(chart, use_container_width=False)
 
 def plot_scatter_all_teams(temporada):
-    # Lista para armazenar os dados
     team_stats = []
 
-    # Itera por todos os times
     for team in teams.get_teams():
         team_id = team['id']
         team
         team_name = team['full_name']
 
-        # Obtém os dados de jogos do time para a temporada
         df = lista_jogos.get_team_data(team_id, temporada)[0]
 
-        # Evita times sem dados
         if df.empty:
             continue
 
-        # Calcula as médias de pontos marcados e sofridos
         df[['Pontos Marcados', 'Pontos Sofridos']] = df['Placar'].str.split(' : ', expand=True)
         df['Pontos Marcados'] = pd.to_numeric(df['Pontos Marcados'], errors='coerce')
         df['Pontos Sofridos'] = pd.to_numeric(df['Pontos Sofridos'], errors='coerce')
 
-        # Ignora entradas inválidas
         df = df.dropna(subset=['Pontos Marcados', 'Pontos Sofridos'])
 
-        # Calcula médias
         media_pontos_marcados = df['Pontos Marcados'].mean()
         media_pontos_sofridos = df['Pontos Sofridos'].mean()
 
-        # Adiciona ao dataset final
         team_stats.append({
             'Time': team_name,
             'Média Pontos Marcados': media_pontos_marcados,
             'Média Pontos Sofridos': media_pontos_sofridos
         })
 
-    # Converte para DataFrame
     final_df = pd.DataFrame(team_stats)
 
-    # Cria o scatter plot
     fig = px.scatter(
         final_df,
         x='Média Pontos Marcados',
@@ -387,7 +377,7 @@ def plot_data_chart(df):
     st.plotly_chart(fig, use_container_width=False)
 
 st.title("Equipes NBA")
-st.subheader("Lista de todos os jogos do time")
+st.subheader("Visualização das estatísticas do time")
 
 tab1, tab2 = st.tabs(["Season 2023-24", "Season 2024-25"])
 
