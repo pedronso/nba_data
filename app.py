@@ -10,7 +10,7 @@ pages = {
     ],
     "🤾 Parte 2 - Jogadores NBA": [ 
         st.Page("./pages/parte2/dados_jogadores.py", title="Dados dos Jogadores", icon=""),
-        st.Page("./pages/parte2/metricas_jogador.py", title="Métricas Individuais", icon="")
+        st.Page("./pages/parte2/graficos_jogadores.py", title="Gráficos dos Jogadores", icon="")
     ],
     "🤖 Parte 3 - Estatísticas e Aprendizado de Máquina": [
         st.Page("./pages/parte3/parte3.py", title="Parte 3", icon="")
