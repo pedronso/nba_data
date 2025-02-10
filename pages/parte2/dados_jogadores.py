@@ -49,8 +49,8 @@ def get_players(team_id):
 
     return df
 
-def get_player_games(player_id):
-    gamelog = playergamelog.PlayerGameLog(player_id=player_id, season='2024-23')
+def get_player_games(player_id, season):
+    gamelog = playergamelog.PlayerGameLog(player_id, season)
     df = gamelog.get_data_frames()[0]
 
     return df
@@ -74,11 +74,11 @@ def player_selectbox(df_p):
         st.warning("Jogador não encontrado.")
         return None
 
-def get_player_games_df(df_g):
+def get_player_games_df(df_g, season):
     df_g["Victory"] = df_g["WL"] == "W"
     df_g["Defeat"] = df_g["WL"] == "L"
 
-    df_j = lista_jogos.get_team_data(1610612739, '2024-25')[0]
+    df_j = lista_jogos.get_team_data(1610612739, season)[0]
     df_j = df_j[["ID do Jogo" , "Placar", "Localidade", "Oponente", "Data do Jogo"]]
 
     full_data = pd.merge(df_j, df_g, left_on='ID do Jogo', right_on ='Game_ID', how='right')    
@@ -196,9 +196,9 @@ with tab1:
 with tab2:
     st.header("Partidas dos Jogadores")
     player_id = player_selectbox(df_p)
-    df_g = get_player_games(player_id)
+    df_g = get_player_games(player_id, "2024-25")
     with st.expander("Filtros", icon="🔎"):
-        full_data = get_player_games_df(df_g)
+        full_data = get_player_games_df(df_g, "2024-25")
 
         localidade_opcoes = full_data["Localidade"].unique()
         localidade_selecionada = st.multiselect("Filtrar por Localidade", localidade_opcoes, default=localidade_opcoes)
@@ -206,7 +206,7 @@ with tab2:
         oponente_opcoes = full_data["Oponente"].unique()
         oponente_selecionado = st.multiselect("Filtrar por Oponente", oponente_opcoes, default=oponente_opcoes)
 
-        opcoes_resultado = ["Vitória", "Derrota", "Ambos"]
+        opcoes_resultado = ["Ambos", "Vitória", "Derrota"]
         resultado_selecionado = st.selectbox("Filtrar por Resultado", opcoes_resultado)
 
         df_filtrado = full_data[(full_data["Localidade"].isin(localidade_selecionada)) & (full_data["Oponente"].isin(oponente_selecionado))]

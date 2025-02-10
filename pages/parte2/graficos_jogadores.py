@@ -2,8 +2,6 @@ import pandas as pd
 import streamlit as st
 import altair as alt
 import plotly.express as px
-import matplotlib.pyplot as plt
-import seaborn as sns
 from pages.parte2 import dados_jogadores
 
 st.title("Gráficos dos Jogadores")
@@ -44,9 +42,9 @@ def plot_box_plot_plotly(df, colunas):
     st.plotly_chart(fig)
 
 df_p = dados_jogadores.get_players(1610612739)
-df_g = dados_jogadores.get_player_games(dados_jogadores.player_selectbox(df_p))
+df_g = dados_jogadores.get_player_games(dados_jogadores.player_selectbox(df_p), "2024-25")
 
-df_f = dados_jogadores.get_player_games_df(df_g)
+df_f = dados_jogadores.get_player_games_df(df_g, "2024-25")
 
 st.subheader("Distribuição de Pontos, Rebotes e Assistências")
 plot_distribution_altair(df_f, "Pontos", "Pontos por Jogo")

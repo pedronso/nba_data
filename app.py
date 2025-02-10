@@ -13,7 +13,7 @@ pages = {
         st.Page("./pages/parte2/graficos_jogadores.py", title="Gráficos dos Jogadores", icon="")
     ],
     "🤖 Parte 3 - Estatísticas e Aprendizado de Máquina": [
-        st.Page("./pages/parte3/parte3.py", title="Parte 3", icon="")
+        st.Page("./pages/parte3/modelos_estatisticos.py", title="Modelos Estatísticos", icon="")
     ]
 }
 pg = st.navigation(pages)
